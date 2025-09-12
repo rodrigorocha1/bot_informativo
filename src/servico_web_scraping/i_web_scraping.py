@@ -1,5 +1,5 @@
 from abc import abstractmethod, ABC
-from typing import Any, Dict, TypeVar, Generic
+from typing import TypeVar, Generic
 
 T = TypeVar("T")  # Tipo do objeto retornado por conectar_site
 R = TypeVar("R")  # Tipo do resultado final (ex: Dict[str, Any])

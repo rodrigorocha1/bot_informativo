@@ -3,12 +3,13 @@ from typing import Dict, List
 import requests
 from bs4 import BeautifulSoup, Tag
 
-from .i_web_scraping import IWebScraping
+from .web_scraping_base import WebScrapingBase
 
 
-class WebScrapingBs4(IWebScraping[BeautifulSoup, List[Dict]]):
+class WebScrapingBs4(WebScrapingBase[BeautifulSoup, List[Dict]]):
 
     def __init__(self):
+        super().__init__()
         self.__url = 'https://aacep.com.br/noticias/'
 
     def conectar_site(self) -> BeautifulSoup:
@@ -45,5 +46,5 @@ class WebScrapingBs4(IWebScraping[BeautifulSoup, List[Dict]]):
                     'resumo': resumo_tag.get_text(strip=True)
                 }
             )
-
+        self.notificar(dado=lista_noticias)
         return lista_noticias
