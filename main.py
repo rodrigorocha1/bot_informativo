@@ -7,9 +7,11 @@ req = requests.get(url=url)
 html = req.text
 
 soup = BeautifulSoup(html, "html.parser")
+print(type(soup))
 
 # Pega todos os títulos das manchetes
 noticias = soup.find_all("article", class_="elementor-post")
+
 print(noticias[2].find('h3', class_='elementor-post__title').get_text(strip=True))
 
 print("noticia")
