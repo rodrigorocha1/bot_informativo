@@ -1,9 +1,13 @@
+import locale
+from datetime import datetime
 from typing import Dict, List
 
 import requests
 from bs4 import BeautifulSoup, Tag
 
 from .web_scraping_base import WebScrapingBase
+
+locale.setlocale(locale.LC_TIME, 'pt_BR.UTF-8')
 
 
 class WebScrapingBs4(WebScrapingBase[BeautifulSoup, List[Dict]]):
@@ -49,7 +53,7 @@ class WebScrapingBs4(WebScrapingBase[BeautifulSoup, List[Dict]]):
             lista_noticias.append(
                 {
                     'texto': titulo_tag.get_text(strip=True),
-                    'data': data_tag.get_text(strip=True),
+                    'data': datetime.strptime(data_tag.get_text(strip=True), "%d de %B de %Y"),
                     'resumo': resumo_tag.get_text(strip=True)
                 }
             )
