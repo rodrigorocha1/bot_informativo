@@ -24,6 +24,13 @@ class WebScrapingBs4(WebScrapingBase[BeautifulSoup, List[Dict]]):
         return soup
 
     def obter_dados(self, dados: BeautifulSoup) -> List[Dict]:
+        """
+        Método para obter dados
+        :param dados: dados de retorno
+        :type dados: BeautifulSoup
+        :return: Lista com as noticias
+        :rtype: List[Dict]
+        """
         lista_noticias: List[Dict] = []
 
         noticias = dados.find_all("article", class_="elementor-post")
