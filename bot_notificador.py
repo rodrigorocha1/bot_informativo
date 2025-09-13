@@ -1,6 +1,6 @@
 from time import sleep
 from typing import List, TypeVar, Generic
-
+from utlis.pacote_log import logger
 from src.core.isujeito import ISujeito
 from src.core.sujeito_concreto import SujeitoConcreto
 from src.obsevardores.iobservador import IObservador
@@ -28,15 +28,16 @@ class NotificadorBot(Generic[T]):
         [self.__sujeito.anexar(observador) for observador in self.__observadores]
         dado = self.__servico_web_scraping.conectar_site()
         for texto in self.__servico_web_scraping.obter_dados(dados=dado):
-            print(texto)
+
             self.__sujeito.notificar(dado=texto)
             sleep(2)
             if texto is None:
-                print('Sem texto')
+                logger.info('SEM NOTICIA COLETADA ENCERRANDO')
                 break
 
 
 if __name__ == '__main__':
+    logger.info('Iniciando bot')
     sujeito = SujeitoConcreto()
     observador_telegram = ObservadorTelegram()
     observador_email = ObservadorGmailEmail(assunto='Sem noticia')
@@ -50,3 +51,4 @@ if __name__ == '__main__':
         servico_web_scraping=WebScrapingBs4()
     )
     notificador_bot.executar_bot()
+    logger.info('Encerrando execução bot')
