@@ -46,6 +46,7 @@ class WebScrapingBs4(WebScrapingBase[BeautifulSoup, List[Dict]]):
             titulo_tag = noticia.find('h3', class_='elementor-post__title')
             data_tag = noticia.find('span', class_='elementor-post-date')
             resumo_tag = noticia.select_one(".elementor-post__excerpt p")
+            link_noticia = noticia.find('a', class_='elementor-post__thumbnail__link').get('href')
 
             if not titulo_tag or not data_tag or not resumo_tag:
                 continue
@@ -54,7 +55,8 @@ class WebScrapingBs4(WebScrapingBase[BeautifulSoup, List[Dict]]):
                 {
                     'texto': titulo_tag.get_text(strip=True),
                     'data': datetime.strptime(data_tag.get_text(strip=True), "%d de %B de %Y").date(),
-                    'resumo': resumo_tag.get_text(strip=True)
+                    'resumo': resumo_tag.get_text(strip=True),
+                    'link_noticia': link_noticia
                 }
             )
         self.notificar(dado=lista_noticias)
