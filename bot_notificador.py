@@ -28,7 +28,7 @@ class NotificadorBot(Generic[T]):
         dado = self.__servico_web_scraping.conectar_site()
         for texto in self.__servico_web_scraping.obter_dados(dados=dado):
             self.__sujeito.notificar(dado=texto)
-            if not texto:
+            if texto is None:
                 print('Sem texto')
                 break
 

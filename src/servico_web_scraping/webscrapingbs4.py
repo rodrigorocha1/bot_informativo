@@ -1,5 +1,5 @@
 import locale
-from typing import Generator
+from typing import Generator, Optional
 
 import requests
 from bs4 import BeautifulSoup, Tag
@@ -26,7 +26,7 @@ class WebScrapingBs4(WebScrapingBase[BeautifulSoup]):
         soup = BeautifulSoup(html, 'html.parser')
         return soup
 
-    def obter_dados(self, dados: BeautifulSoup) -> Generator[str, None, None]:
+    def obter_dados(self, dados: BeautifulSoup) -> Generator[Optional[str], None, None]:
         """
         Método para obter dados
         :param dados: dados de retorno
@@ -56,4 +56,4 @@ class WebScrapingBs4(WebScrapingBase[BeautifulSoup]):
                 f"<b>Resumo noticia:</b> {resumo_tag.get_text(strip=True)}\n"
                 f"<b>Link:</b> {link_noticia}"
             )
-            yield texto
+            yield texto or None

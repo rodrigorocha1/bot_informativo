@@ -16,19 +16,16 @@ class ObservadorGmailEmail(IObservador):
         self.__assunto = assunto
         self.__servico_email = smtplib.SMTP('smtp.gmail.com: 587')
 
-    def atualizar(self, dados: Optional[str]):
-        if not dados:
-            dados = 'Sem notícias no momento'
-
-
+    def __preparar_dados(self, dados: Optional[str]):
         mensagem = MIMEMultipart()
         mensagem['Subject'] = self.__assunto
         mensagem['From'] = self.__remetente
         mensagem['To'] = self.__destinatario
         corpo = MIMEText(dados, 'html')
         mensagem.attach(corpo)
+        return mensagem
 
-
+    def __enviar_dados(self, mensagem):
         with smtplib.SMTP('smtp.gmail.com', 587) as servico_email:
             servico_email.ehlo()
             servico_email.starttls()
@@ -38,3 +35,9 @@ class ObservadorGmailEmail(IObservador):
                 [self.__destinatario],
                 mensagem.as_string()
             )
+
+    def atualizar(self, dados: Optional[str]):
+        if dados is None:
+            dados = 'Sem notícias no momento'
+            mensagem = self.__preparar_dados(dados=dados)
+            self.__enviar_dados(mensagem=mensagem)
