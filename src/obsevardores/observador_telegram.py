@@ -16,3 +16,4 @@ class ObservadorTelegram(IObservador):
     def atualizar(self, dado: Optional[str]):
         if dado:
             self.__bot.send_message(self.__CHAT_ID, dado, parse_mode="HTML")
+

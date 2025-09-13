@@ -1,3 +1,4 @@
+from time import sleep
 from typing import List, TypeVar, Generic
 
 from src.core.isujeito import ISujeito
@@ -28,6 +29,7 @@ class NotificadorBot(Generic[T]):
         dado = self.__servico_web_scraping.conectar_site()
         for texto in self.__servico_web_scraping.obter_dados(dados=dado):
             self.__sujeito.notificar(dado=texto)
+            sleep(2)
             if texto is None:
                 print('Sem texto')
                 break
