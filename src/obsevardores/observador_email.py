@@ -2,9 +2,10 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from src.config.config import Config
+from src.obsevardores.iobservador import IObservador
 
 
-class GmailEmail:
+class ObservadorGmailEmail(IObservador):
     def __init__(self, assunto: str):
         self.__rementente = Config.EMAIL_REMENTENTE
         self.__destinatario = Config.EMAIL_DESTINATARIO
@@ -13,7 +14,7 @@ class GmailEmail:
         self.__assunto = assunto
         self.__servico_email = smtplib.SMTP(Config.CONF_SMTP)
 
-    def enviar_email(self, texto_email: str):
+    def atualizar(self, texto_email: str):
         self.__mensagem['Subject'] = self.__assunto
         self.__mensagem['From'] = self.__rementente
         self.__mensagem['To'] = self.__destinatario

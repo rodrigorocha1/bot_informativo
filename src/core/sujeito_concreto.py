@@ -1,4 +1,4 @@
-from typing import List, TypeVar, Generic
+from typing import List
 
 from src.core.isujeito import ISujeito
 from ..obsevardores.iobservador import IObservador

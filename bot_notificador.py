@@ -4,6 +4,7 @@ from src.core.isujeito import ISujeito
 from src.core.sujeito_concreto import SujeitoConcreto
 from src.obsevardores.iobservador import IObservador
 from src.obsevardores.observador_telegram import ObservadorTelegram
+from src.obsevardores.observador_email import ObservadorGmailEmail
 from src.servico_web_scraping.i_web_scraping import IWebScraping
 from src.servico_web_scraping.webscrapingbs4 import WebScrapingBs4
 
@@ -29,13 +30,16 @@ class NotificadorBot(Generic[T]):
             self.__sujeito.notificar(dado=texto)
 
 
+
 if __name__ == '__main__':
     sujeito = SujeitoConcreto()
 
     observador_telegram = ObservadorTelegram()
+    observador_email = ObservadorGmailEmail(assunto='Sem noticia')
 
     lista_observadores = [
-        observador_telegram
+        observador_telegram,
+        observador_email
     ]
 
     notificador_bot = NotificadorBot(

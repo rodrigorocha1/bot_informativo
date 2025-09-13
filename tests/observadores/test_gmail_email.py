@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import patch, MagicMock
 from email import message_from_bytes
-from src.obsevardores.observador_email import GmailEmail
+from src.obsevardores.observador_email import ObservadorGmailEmail
 from src.config.config import Config
 
 
@@ -12,7 +12,7 @@ def test_enviar_email(mock_smtp):
 
     assunto = "Teste de Email"
     texto = "<h1>Corpo de Email</h1>"
-    email = GmailEmail(assunto)
+    email = ObservadorGmailEmail(assunto)
     email.enviar_email(texto)
 
     mock_smtp.assert_called_with(Config.CONF_SMTP)
@@ -45,7 +45,7 @@ def test_enviar_email_real():
     assunto = "Teste Real de Email via Pytest"
     corpo = "<h1>Este é um email enviado pelo pytest!</h1>"
 
-    email = GmailEmail(assunto)
+    email = ObservadorGmailEmail(assunto)
 
     try:
         email.enviar_email(corpo)
