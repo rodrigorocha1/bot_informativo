@@ -2,7 +2,7 @@ name: Bot Informativo AACEP
 
 on:
   schedule:
-    - cron: "0 22 * * 1-5"
+    - cron: "0 22 * * 1-5"  # Segunda a sexta às 22h UTC
 
 jobs:
   scrape:
@@ -23,4 +23,10 @@ jobs:
           pip install -r requirements.txt
 
       - name: Executar scraper
+        env:
+          TOKEN_TELEGRAM: ${{ secrets.TOKEN_TELEGRAM }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+          SENHA_EMAIL: ${{ secrets.SENHA_EMAIL }}
+          EMAIL_REMENTENTE: ${{ secrets.EMAIL_REMENTENTE }}
+          EMAIL_DESTINATARIO: ${{ secrets.EMAIL_DESTINATARIO }}
         run: python bot_notificador.py
