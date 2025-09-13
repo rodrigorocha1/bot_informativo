@@ -9,25 +9,32 @@ from src.obsevardores.iobservador import IObservador
 
 class ObservadorGmailEmail(IObservador):
     def __init__(self, assunto: str):
-        self.__rementente = Config.EMAIL_REMENTENTE
+        self.__remetente = Config.EMAIL_REMENTENTE
         self.__destinatario = Config.EMAIL_DESTINATARIO
         self.__senha = Config.SENHA_EMAIL
         self.__mensagem = MIMEMultipart()
         self.__assunto = assunto
-        self.__servico_email = smtplib.SMTP(Config.CONF_SMTP, Config.PORTA_SMTP)
+        self.__servico_email = smtplib.SMTP('smtp.gmail.com: 587')
 
     def atualizar(self, dados: Optional[str]):
         if not dados:
-            dados = 'Sem noticias no momento'
-            self.__mensagem['Subject'] = self.__assunto
-            self.__mensagem['From'] = self.__rementente
-            self.__mensagem['To'] = self.__destinatario
-            corpo = MIMEText(dados, 'html')
-            self.__mensagem.attach(corpo)
-            self.__servico_email.starttls()
-            self.__servico_email.login(self.__mensagem['FROM'], self.__senha)
-            self.__servico_email.sendmail(
-                self.__mensagem['From'],
-                [self.__mensagem['To']],
-                self.__mensagem.as_string().encode('utf-8')
+            dados = 'Sem notícias no momento'
+
+
+        mensagem = MIMEMultipart()
+        mensagem['Subject'] = self.__assunto
+        mensagem['From'] = self.__remetente
+        mensagem['To'] = self.__destinatario
+        corpo = MIMEText(dados, 'html')
+        mensagem.attach(corpo)
+
+
+        with smtplib.SMTP('smtp.gmail.com', 587) as servico_email:
+            servico_email.ehlo()
+            servico_email.starttls()
+            servico_email.login(self.__remetente, self.__senha)
+            servico_email.sendmail(
+                self.__remetente,
+                [self.__destinatario],
+                mensagem.as_string()
             )
