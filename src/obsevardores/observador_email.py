@@ -1,6 +1,8 @@
 import smtplib
-from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from typing import Optional
+
 from src.config.config import Config
 from src.obsevardores.iobservador import IObservador
 
@@ -14,8 +16,9 @@ class ObservadorGmailEmail(IObservador):
         self.__assunto = assunto
         self.__servico_email = smtplib.SMTP(Config.CONF_SMTP, Config.PORTA_SMTP)
 
-    def atualizar(self, dados: str):
+    def atualizar(self, dados: Optional[str]):
         if not dados:
+            dados = 'Sem noticias no momento'
             self.__mensagem['Subject'] = self.__assunto
             self.__mensagem['From'] = self.__rementente
             self.__mensagem['To'] = self.__destinatario

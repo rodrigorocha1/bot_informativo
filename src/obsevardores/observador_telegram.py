@@ -1,3 +1,5 @@
+from typing import Optional
+
 from telebot import TeleBot
 
 from .iobservador import IObservador
@@ -11,6 +13,6 @@ class ObservadorTelegram(IObservador):
         self.__CHAT_ID = Config.CHAT_ID
         self.__bot = TeleBot(self.__TOKEN_TELEGRAM)
 
-    def atualizar(self, dado: str):
+    def atualizar(self, dado: Optional[str]):
         if dado:
             self.__bot.send_message(self.__CHAT_ID, dado, parse_mode="HTML")
