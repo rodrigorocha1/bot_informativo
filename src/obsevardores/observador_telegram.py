@@ -12,4 +12,5 @@ class ObservadorTelegram(Observador):
         self.__bot = TeleBot(self.__TOKEN_TELEGRAM)
 
     def atualizar(self, dado: str):
-        self.__bot.send_message(self.__CHAT_ID, dado, parse_mode="MarkdownV2")
+        if dado:
+            self.__bot.send_message(self.__CHAT_ID, dado, parse_mode="HTML")

@@ -1,6 +1,4 @@
 import locale
-from datetime import datetime
-from typing import Dict, List
 
 import requests
 from bs4 import BeautifulSoup, Tag
@@ -10,7 +8,7 @@ from .web_scraping_base import WebScrapingBase
 locale.setlocale(locale.LC_TIME, 'pt_BR.UTF-8')
 
 
-class WebScrapingBs4(WebScrapingBase[BeautifulSoup, List[Dict]]):
+class WebScrapingBs4(WebScrapingBase[BeautifulSoup]):
 
     def __init__(self):
         super().__init__()
@@ -27,15 +25,12 @@ class WebScrapingBs4(WebScrapingBase[BeautifulSoup, List[Dict]]):
         soup = BeautifulSoup(html, 'html.parser')
         return soup
 
-    def obter_dados(self, dados: BeautifulSoup) -> List[Dict]:
+    def obter_dados(self, dados: BeautifulSoup) -> None:
         """
         Método para obter dados
         :param dados: dados de retorno
         :type dados: BeautifulSoup
-        :return: Lista com as noticias
-        :rtype: List[Dict]
         """
-        lista_noticias: List[Dict] = []
 
         noticias = dados.find_all("article", class_="elementor-post")
 
@@ -46,18 +41,19 @@ class WebScrapingBs4(WebScrapingBase[BeautifulSoup, List[Dict]]):
             titulo_tag = noticia.find('h3', class_='elementor-post__title')
             data_tag = noticia.find('span', class_='elementor-post-date')
             resumo_tag = noticia.select_one(".elementor-post__excerpt p")
-            link_noticia = noticia.find('a', class_='elementor-post__thumbnail__link').get('href')
+            link_tag = noticia.find('a', class_='elementor-post__thumbnail__link')
+
+            href = link_tag.get('href') if isinstance(link_tag, Tag) else None
+            link_noticia = href if isinstance(href, str) else None
 
             if not titulo_tag or not data_tag or not resumo_tag or not link_noticia:
                 continue
 
-            lista_noticias.append(
-                {
-                    'titulo': titulo_tag.get_text(strip=True),
-                    'data': datetime.strptime(data_tag.get_text(strip=True), "%d de %B de %Y").date(),
-                    'resumo': resumo_tag.get_text(strip=True),
-                    'link_noticia': link_noticia
-                }
+            texto: str = (
+                f"<b>Título:</b> {titulo_tag.get_text(strip=True)}\n"
+                f"<b>Data da Noticia:</b> {data_tag.get_text(strip=True)}\n"
+                f"<b>Resumo noticia:</b> {resumo_tag.get_text(strip=True)}\n"
+                f"<b>Link:</b> {link_noticia}"
             )
-        self.notificar(dado=lista_noticias)
-        return lista_noticias
+
+            self.notificar(dado=texto)

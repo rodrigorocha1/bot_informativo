@@ -15,6 +15,6 @@ class Sujeito(ABC):
     def remover(self, observador: Observador):
         self._observadores.remove(observador)
 
-    def notificar(self, dado: List[Dict]):
+    def notificar(self, dado: str):
         for observador in self._observadores:
             observador.atualizar(dado)
