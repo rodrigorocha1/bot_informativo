@@ -1,4 +1,5 @@
 import locale
+from datetime import datetime, timedelta
 from typing import Generator, Optional
 
 import requests
@@ -14,6 +15,7 @@ class WebScrapingBs4(WebScrapingBase[BeautifulSoup]):
     def __init__(self):
         super().__init__()
         self.__url = 'https://aacep.com.br/noticias/'
+        self.__data_atual = datetime.now().date()
 
     def conectar_site(self) -> BeautifulSoup:
         """
@@ -50,10 +52,13 @@ class WebScrapingBs4(WebScrapingBase[BeautifulSoup]):
             if not titulo_tag or not data_tag or not resumo_tag or not link_noticia:
                 continue
 
-            texto: str = (
-                f"<b>Título:</b> {titulo_tag.get_text(strip=True)}\n"
-                f"<b>Data da Noticia:</b> {data_tag.get_text(strip=True)}\n"
-                f"<b>Resumo noticia:</b> {resumo_tag.get_text(strip=True)}\n"
-                f"<b>Link:</b> {link_noticia}"
-            )
-            yield texto or None
+            data_base = datetime.strptime(data_tag, "%d de %B de %Y")
+
+            if self.__data_atual <= data_base <= data_base - timedelta(days=2):
+                texto: str = (
+                    f"<b>Título:</b> {titulo_tag.get_text(strip=True)}\n"
+                    f"<b>Data da Noticia:</b> {data_tag.get_text(strip=True)}\n"
+                    f"<b>Resumo noticia:</b> {resumo_tag.get_text(strip=True)}\n"
+                    f"<b>Link:</b> {link_noticia}"
+                )
+                yield texto or None
