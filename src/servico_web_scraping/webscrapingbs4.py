@@ -53,7 +53,7 @@ class WebScrapingBs4(WebScrapingBase[BeautifulSoup, List[Dict]]):
             lista_noticias.append(
                 {
                     'texto': titulo_tag.get_text(strip=True),
-                    'data': datetime.strptime(data_tag.get_text(strip=True), "%d de %B de %Y"),
+                    'data': datetime.strptime(data_tag.get_text(strip=True), "%d de %B de %Y").date(),
                     'resumo': resumo_tag.get_text(strip=True)
                 }
             )
