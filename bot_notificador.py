@@ -2,8 +2,10 @@ from typing import TypeVar, Generic
 
 from src.servico_web_scraping.i_web_scraping import IWebScraping
 from src.servico_web_scraping.webscrapingbs4 import WebScrapingBs4
+from src.obsevardores.observador_telegram import ObservadorTelegram
 
 T = TypeVar("T")
+
 
 class NotificadorBot(Generic[T]):
 
@@ -16,5 +18,7 @@ class NotificadorBot(Generic[T]):
 
 
 wsbs4 = WebScrapingBs4()
+wsbs4.anexar(observador=ObservadorTelegram())
+
 notificador = NotificadorBot(wsbs4)
 notificador.executar()
