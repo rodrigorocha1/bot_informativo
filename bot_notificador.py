@@ -8,7 +8,7 @@ T = TypeVar("T")
 class NotificadorBot(Generic[T]):
 
     def __init__(self, servico_web_scraping: IWebScraping[T]):
-        self.__servico_web_scraping = servico_web_scraping  # tipo inferido automaticamente
+        self.__servico_web_scraping = servico_web_scraping
 
     def executar(self) -> None:
         dados = self.__servico_web_scraping.conectar_site()
