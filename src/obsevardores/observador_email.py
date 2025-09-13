@@ -16,7 +16,7 @@ class ObservadorGmailEmail(IObservador):
         self.__assunto = assunto
         self.__servico_email = smtplib.SMTP('smtp.gmail.com: 587')
 
-    def __preparar_dados(self, dados: Optional[str]):
+    def __preparar_dados(self, dados: str):
         mensagem = MIMEMultipart()
         mensagem['Subject'] = self.__assunto
         mensagem['From'] = self.__remetente

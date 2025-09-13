@@ -28,6 +28,7 @@ class NotificadorBot(Generic[T]):
         [self.__sujeito.anexar(observador) for observador in self.__observadores]
         dado = self.__servico_web_scraping.conectar_site()
         for texto in self.__servico_web_scraping.obter_dados(dados=dado):
+            print(texto)
             self.__sujeito.notificar(dado=texto)
             sleep(2)
             if texto is None:

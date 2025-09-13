@@ -10,10 +10,10 @@ data_str = "2 de julho de 2025"
 # Converte para datetime.date
 data_verificar = datetime.strptime(data_str, "%d de %B de %Y").date()
 
-# Data base (hoje)
+
 data_base = datetime.now().date()
 
-# Intervalo de 2 dias
+
 inicio = data_base
 fim = data_base + timedelta(days=2)
 

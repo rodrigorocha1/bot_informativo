@@ -16,6 +16,7 @@ class WebScrapingBs4(WebScrapingBase[BeautifulSoup]):
         super().__init__()
         self.__url = 'https://aacep.com.br/noticias/'
         self.__data_atual = datetime.now().date()
+        self.__intervalo_dias = 1
 
     def conectar_site(self) -> BeautifulSoup:
         """
@@ -51,14 +52,15 @@ class WebScrapingBs4(WebScrapingBase[BeautifulSoup]):
 
             if not titulo_tag or not data_tag or not resumo_tag or not link_noticia:
                 continue
+            data_str = data_tag.get_text(strip=True)
+            data_base = datetime.strptime(data_str, "%d de %B de %Y").date()
 
-            data_base = datetime.strptime(data_tag, "%d de %B de %Y")
-
-            if self.__data_atual <= data_base <= data_base - timedelta(days=2):
+            if (self.__data_atual - timedelta(days=self.__intervalo_dias)) <= data_base <= self.__data_atual:
                 texto: str = (
                     f"<b>Título:</b> {titulo_tag.get_text(strip=True)}\n"
                     f"<b>Data da Noticia:</b> {data_tag.get_text(strip=True)}\n"
                     f"<b>Resumo noticia:</b> {resumo_tag.get_text(strip=True)}\n"
                     f"<b>Link:</b> {link_noticia}"
                 )
-                yield texto or None
+                yield texto
+            yield None
