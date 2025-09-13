@@ -1,7 +1,7 @@
 from abc import ABC
 from typing import List, Dict
 
-from .observador import Observador
+from src.obsevardores.observador import Observador
 
 
 class Sujeito(ABC):
