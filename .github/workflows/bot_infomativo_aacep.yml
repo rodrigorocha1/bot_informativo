@@ -2,8 +2,8 @@ name: Bot Informativo AACEP
 
 on:
   schedule:
-    - cron: "0 22 * * 1-5"  # Segunda a sexta às 22h UTC
-
+    - cron: "0 19 * * 1-5"  # Segunda a sexta às 19h UTC
+  workflow_dispatch:
 jobs:
   scrape:
     runs-on: ubuntu-latest
