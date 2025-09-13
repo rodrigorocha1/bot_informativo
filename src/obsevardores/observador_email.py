@@ -28,5 +28,3 @@ class ObservadorGmailEmail(IObservador):
                 [self.__mensagem['To']],
                 self.__mensagem.as_string().encode('utf-8')
             )
-        else:
-            print('Sem dados para enviar no email')
