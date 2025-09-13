@@ -1,13 +1,11 @@
-import locale
 from datetime import datetime, timedelta
 from typing import Generator, Optional
 
+import dateparser
 import requests
 from bs4 import BeautifulSoup, Tag
 
 from .web_scraping_base import WebScrapingBase
-
-locale.setlocale(locale.LC_TIME, 'pt_BR.UTF-8')
 
 
 class WebScrapingBs4(WebScrapingBase[BeautifulSoup]):
@@ -53,7 +51,7 @@ class WebScrapingBs4(WebScrapingBase[BeautifulSoup]):
             if not titulo_tag or not data_tag or not resumo_tag or not link_noticia:
                 continue
             data_str = data_tag.get_text(strip=True)
-            data_base = datetime.strptime(data_str, "%d de %B de %Y").date()
+            data_base = dateparser.parse(data_str, languages=['pt']).date()
 
             if (self.__data_atual - timedelta(days=self.__intervalo_dias)) <= data_base <= self.__data_atual:
                 texto: str = (
