@@ -2,7 +2,7 @@ name: Bot Informativo AACEP
 
 on:
   schedule:
-    - cron: "0 19 * * 1-5"  # Segunda a sexta às 19h UTC
+    - cron: "0 22 * * 1-5"  # Segunda a sexta às 19h UTC
   workflow_dispatch:
 jobs:
   scrape:
@@ -12,12 +12,7 @@ jobs:
       - name: Checkout do repositório
         uses: actions/checkout@v3
 
-      - name: Instalar locale pt_BR
-        run: |
-            sudo apt-get update
-            sudo apt-get install -y locales
-            sudo locale-gen pt_BR.UTF-8
-            sudo update-locale
+
 
       - name: Configurar Python
         uses: actions/setup-python@v4
