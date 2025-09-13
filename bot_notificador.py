@@ -1,10 +1,9 @@
 from typing import TypeVar, Generic
-from bs4 import BeautifulSoup
 
 from src.servico_web_scraping.i_web_scraping import IWebScraping
 from src.servico_web_scraping.webscrapingbs4 import WebScrapingBs4
 
-T = TypeVar("T")  # Tipo do objeto retornado por conectar_site
+T = TypeVar("T")
 
 class NotificadorBot(Generic[T]):
 
