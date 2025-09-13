@@ -1,10 +1,10 @@
 from telebot import TeleBot
 
-from src.obsevardores.observador import Observador
+from .iobservador import IObservador
 from ..config.config import Config
 
 
-class ObservadorTelegram(Observador):
+class ObservadorTelegram(IObservador):
 
     def __init__(self):
         self.__TOKEN_TELEGRAM = Config.TOKEN_TELEGRAM

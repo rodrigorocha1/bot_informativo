@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class Observador(ABC):
+class IObservador(ABC):
 
     @abstractmethod
     def atualizar(self, dado: str):

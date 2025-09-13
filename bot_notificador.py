@@ -1,24 +1,41 @@
-from typing import TypeVar, Generic
+from typing import List, TypeVar, Generic
 
-from src.servico_web_scraping.i_web_scraping import IWebScraping
-from src.servico_web_scraping.webscrapingbs4 import WebScrapingBs4
+from src.core.isujeito import ISujeito
+from src.core.sujeito_concreto import SujeitoConcreto
+from src.obsevardores.iobservador import IObservador
 from src.obsevardores.observador_telegram import ObservadorTelegram
+from src.servico_web_scraping.i_web_scraping import IWebScraping
 
-T = TypeVar("T")
+T = TypeVar('T')
 
 
 class NotificadorBot(Generic[T]):
 
-    def __init__(self, servico_web_scraping: IWebScraping[T]):
+    def __init__(
+            self,
+            sujeito: ISujeito,
+            observadores: List[IObservador],
+            servico_web_scraping: IWebScraping[T]
+    ):
+        self.__sujeito = sujeito
+        self.__observadores = observadores
         self.__servico_web_scraping = servico_web_scraping
 
-    def executar(self) -> None:
-        dados = self.__servico_web_scraping.conectar_site()
-        self.__servico_web_scraping.obter_dados(dados=dados)
+    def executar_bot(self):
+        [self.__sujeito.anexar(observador) for observador in self.__observadores]
+        dado = self.__servico_web_scraping.conectar_site()
 
 
-wsbs4 = WebScrapingBs4()
-wsbs4.anexar(observador=ObservadorTelegram())
+if __name__ == '__main__':
+    sujeito = SujeitoConcreto()
 
-notificador = NotificadorBot(wsbs4)
-notificador.executar()
+    observador_telegram = ObservadorTelegram()
+
+    lista_observadores = [
+        observador_telegram
+    ]
+
+    notificador_bot = NotificadorBot(
+        sujeito=sujeito,
+        observadores=lista_observadores
+    )

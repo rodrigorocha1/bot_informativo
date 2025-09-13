@@ -1,6 +1,8 @@
 from abc import abstractmethod, ABC
 from typing import TypeVar, Generic
 
+
+
 T = TypeVar("T")  # Tipo do objeto retornado por conectar_site
 
 
