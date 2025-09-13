@@ -1,5 +1,3 @@
-from typing import List, Dict
-
 from telebot import TeleBot
 
 from src.obsevardores.observador import Observador
@@ -13,5 +11,5 @@ class ObservadorTelegram(Observador):
         self.__CHAT_ID = Config.CHAT_ID
         self.__bot = TeleBot(self.__TOKEN_TELEGRAM)
 
-    def atualizar(self, dado: List[Dict]):
+    def atualizar(self, dado: str):
         self.__bot.send_message(self.__CHAT_ID, dado, parse_mode="MarkdownV2")
