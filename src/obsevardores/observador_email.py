@@ -37,7 +37,6 @@ class ObservadorGmailEmail(IObservador):
             )
 
     def atualizar(self, dado: Optional[str], flag: int):
-            if flag == 2:
-
-                mensagem = self.__preparar_dados(dados=dado)
-                self.__enviar_dados(mensagem=mensagem)
+        if flag == 2:
+            mensagem = self.__preparar_dados(dados=dado)
+            self.__enviar_dados(mensagem=mensagem)
