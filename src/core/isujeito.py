@@ -15,5 +15,5 @@ class ISujeito(ABC):
         pass
 
     @abstractmethod
-    def notificar(self, dado: Optional[str]):
+    def notificar(self, dado: Optional[str], flag: int):
         pass

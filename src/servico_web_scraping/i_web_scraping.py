@@ -1,7 +1,5 @@
 from abc import abstractmethod, ABC
-from typing import TypeVar, Generic
-
-
+from typing import TypeVar, Generic, Tuple
 
 T = TypeVar("T")  # Tipo do objeto retornado por conectar_site
 
@@ -9,7 +7,7 @@ T = TypeVar("T")  # Tipo do objeto retornado por conectar_site
 class IWebScraping(ABC, Generic[T]):
 
     @abstractmethod
-    def conectar_site(self) -> T | str:
+    def conectar_site(self) -> Tuple[T, int] | str:
         """
         Método para conectar no site
         :return: objeto de conexão

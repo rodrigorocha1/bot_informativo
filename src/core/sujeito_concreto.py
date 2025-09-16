@@ -16,9 +16,9 @@ class SujeitoConcreto(ISujeito):
     def remover(self, observador: IObservador):
         self._observadores.remove(observador)
 
-    def notificar(self, dado: Optional[str]):
+    def notificar(self, dado: Optional[str], flag: int):
         for observador in self._observadores:
-            observador.atualizar(dado)
+            observador.atualizar(dado=dado, flag=flag)
 
     def desanexar(self, observador: IObservador):
         pass

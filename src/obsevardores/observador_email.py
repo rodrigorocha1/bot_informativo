@@ -36,8 +36,8 @@ class ObservadorGmailEmail(IObservador):
                 mensagem.as_string()
             )
 
-    def atualizar(self, dados: Optional[str]):
-        if dados is None:
-            dados = 'Sem notícias no momento'
-            mensagem = self.__preparar_dados(dados=dados)
-            self.__enviar_dados(mensagem=mensagem)
+    def atualizar(self, dados: Optional[str], flag: int):
+            if flag == 2:
+
+                mensagem = self.__preparar_dados(dados=dados)
+                self.__enviar_dados(mensagem=mensagem)

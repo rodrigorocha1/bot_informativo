@@ -27,13 +27,15 @@ class NotificadorBot(Generic[T]):
     def executar_bot(self):
         [self.__sujeito.anexar(observador) for observador in self.__observadores]
         dado = self.__servico_web_scraping.conectar_site()
-        for texto in self.__servico_web_scraping.obter_dados(dados=dado):
-
-            self.__sujeito.notificar(dado=texto)
-            sleep(2)
+        if isinstance(dado[1], str):
+            self.__sujeito.notificar(dado=dado[0], flag=2)
+        for texto in self.__servico_web_scraping.obter_dados(dados=dado[0]):
             if texto is None:
                 logger.info('SEM NOTICIA COLETADA ENCERRANDO')
                 break
+            self.__sujeito.notificar(dado=texto, flag=1)
+            sleep(2)
+
 
 
 if __name__ == '__main__':

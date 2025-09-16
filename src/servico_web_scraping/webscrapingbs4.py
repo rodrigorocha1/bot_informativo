@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from typing import Generator, Optional, Union
+from typing import Generator, Optional, Tuple
 
 import dateparser
 import requests
@@ -17,7 +17,7 @@ class WebScrapingBs4(WebScrapingBase[BeautifulSoup]):
         self.__data_atual = datetime.now().date()
         self.__intervalo_dias = 1
 
-    def conectar_site(self) -> BeautifulSoup | str:
+    def conectar_site(self) -> Tuple[BeautifulSoup, int] | str:
         """
         Método para conectar no site
         :return: objeto de conexão
@@ -27,13 +27,13 @@ class WebScrapingBs4(WebScrapingBase[BeautifulSoup]):
             req = requests.get(self.__url)
             html = req.text
             soup = BeautifulSoup(html, 'html.parser')
-            return soup
+            return soup, 1
         except FeatureNotFound as e:
-            return f'parse de html: {str(e)}'
+            return f'parse de html: {str(e)}, 2'
         except RequestException as m:
-            return f'Erro de Requisição {str(m)}'
+            return f'Erro de Requisição {str(m)}, 2'
         except Exception as e:
-            return f'Erro inesperado: {str(e)}'
+            return f'Erro inesperado: {str(e)}, 2'
 
     def obter_dados(self, dados: BeautifulSoup) -> Generator[Optional[str], None, None]:
         """
