@@ -31,6 +31,8 @@ class NotificadorBot(Generic[T]):
             self.__sujeito.notificar(dado=dado[0], flag=2)
         for texto in self.__servico_web_scraping.obter_dados(dados=dado[0]):
             if texto is None:
+                dados_texto = 'Sem noticia no site'
+                self.__sujeito.notificar(dado=dados_texto, flag=2)
                 logger.info('SEM NOTICIA COLETADA ENCERRANDO')
                 break
             self.__sujeito.notificar(dado=texto, flag=1)
