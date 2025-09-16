@@ -9,7 +9,7 @@ T = TypeVar("T")  # Tipo do objeto retornado por conectar_site
 class IWebScraping(ABC, Generic[T]):
 
     @abstractmethod
-    def conectar_site(self) -> T:
+    def conectar_site(self) -> T | str:
         """
         Método para conectar no site
         :return: objeto de conexão

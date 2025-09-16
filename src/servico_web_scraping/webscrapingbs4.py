@@ -1,9 +1,10 @@
 from datetime import datetime, timedelta
-from typing import Generator, Optional
+from typing import Generator, Optional, Union
 
 import dateparser
 import requests
-from bs4 import BeautifulSoup, Tag
+from bs4 import BeautifulSoup, Tag, FeatureNotFound
+from requests import RequestException
 
 from .web_scraping_base import WebScrapingBase
 
@@ -16,16 +17,23 @@ class WebScrapingBs4(WebScrapingBase[BeautifulSoup]):
         self.__data_atual = datetime.now().date()
         self.__intervalo_dias = 1
 
-    def conectar_site(self) -> BeautifulSoup:
+    def conectar_site(self) -> BeautifulSoup | str:
         """
         Método para conectar no site
         :return: objeto de conexão
-        :rtype: BeautifulSoup
+        :rtype:  BeautifulSoup | str
         """
-        req = requests.get(self.__url)
-        html = req.text
-        soup = BeautifulSoup(html, 'html.parser')
-        return soup
+        try:
+            req = requests.get(self.__url)
+            html = req.text
+            soup = BeautifulSoup(html, 'html.parser')
+            return soup
+        except FeatureNotFound as e:
+            return f'parse de html: {str(e)}'
+        except RequestException as m:
+            return f'Erro de Requisição {str(m)}'
+        except Exception as e:
+            return f'Erro inesperado: {str(e)}'
 
     def obter_dados(self, dados: BeautifulSoup) -> Generator[Optional[str], None, None]:
         """
@@ -51,7 +59,12 @@ class WebScrapingBs4(WebScrapingBase[BeautifulSoup]):
             if not titulo_tag or not data_tag or not resumo_tag or not link_noticia:
                 continue
             data_str = data_tag.get_text(strip=True)
-            data_base = dateparser.parse(data_str, languages=['pt']).date()
+            data_basedt:  datetime | None = dateparser.parse(data_str, languages=['pt'])
+            if data_basedt is None:
+                continue
+
+            data_base = data_basedt.date()
+
 
             if (self.__data_atual - timedelta(days=self.__intervalo_dias)) <= data_base <= self.__data_atual:
                 texto: str = (
